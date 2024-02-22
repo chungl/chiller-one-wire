@@ -54,12 +54,64 @@
     {
         "id": "92b99a777e7b2308",
         "type": "ui-group",
-        "name": "Chart Group",
+        "name": "Reservoir",
         "page": "ff688e6db65990bd",
-        "width": "6",
-        "height": "1",
-        "order": -1,
-        "showTitle": false,
+        "width": "2",
+        "height": "4",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "31c3bbdb778e6274",
+        "type": "ui-group",
+        "name": "Sensors",
+        "page": "ff688e6db65990bd",
+        "width": "3",
+        "height": "4",
+        "order": 5,
+        "showTitle": true,
+        "className": "",
+        "visible": "false",
+        "disabled": "false"
+    },
+    {
+        "id": "9717d6b8e7174784",
+        "type": "ui-group",
+        "name": "Fridge Compartment",
+        "page": "ff688e6db65990bd",
+        "width": "2",
+        "height": "4",
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "1150dfbc2542243a",
+        "type": "ui-group",
+        "name": "Freezer Compartment",
+        "page": "ff688e6db65990bd",
+        "width": "2",
+        "height": "4",
+        "order": 3,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "02821af719429a34",
+        "type": "ui-group",
+        "name": "Fermenter",
+        "page": "ff688e6db65990bd",
+        "width": "2",
+        "height": "4",
+        "order": 4,
+        "showTitle": true,
         "className": "",
         "visible": "true",
         "disabled": "false"
@@ -75,7 +127,8 @@
         "y": 180,
         "wires": [
             [
-                "6db80055ea16ed14"
+                "6db80055ea16ed14",
+                "9dc23e792fe52e3a"
             ]
         ]
     },
@@ -84,7 +137,7 @@
         "type": "debug",
         "z": "1efd7cc3c71e09de",
         "name": "debug 1",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -92,8 +145,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 680,
-        "y": 80,
+        "x": 600,
+        "y": 140,
         "wires": []
     },
     {
@@ -108,7 +161,7 @@
                 "vt": "date"
             }
         ],
-        "repeat": "2",
+        "repeat": "5",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
@@ -132,7 +185,7 @@
         "height": 0,
         "gtype": "gauge-half",
         "gstyle": "needle",
-        "title": "Sensor 1",
+        "title": "Reservoir",
         "units": "°F",
         "prefix": "",
         "suffix": "",
@@ -194,11 +247,31 @@
                 "t": "eq",
                 "v": "28-3ce1d4433942",
                 "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "28-3ce1e380ae89",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "28-3ce1e38020af",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "28-3ce1d44331ee",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "28-3ce1d4438eb5",
+                "vt": "str"
             }
         ],
         "checkall": "false",
         "repair": false,
-        "outputs": 2,
+        "outputs": 6,
         "x": 770,
         "y": 180,
         "wires": [
@@ -207,6 +280,18 @@
             ],
             [
                 "d7cae4a972371c10"
+            ],
+            [
+                "bd7539e8c96648f2"
+            ],
+            [
+                "978eb36b96422f6c"
+            ],
+            [
+                "2a49f5a09c811234"
+            ],
+            [
+                "d07942e060cae33b"
             ]
         ]
     },
@@ -215,13 +300,13 @@
         "type": "ui-gauge",
         "z": "1efd7cc3c71e09de",
         "name": "",
-        "group": "92b99a777e7b2308",
+        "group": "9717d6b8e7174784",
         "order": 0,
         "width": 0,
         "height": 0,
         "gtype": "gauge-half",
         "gstyle": "needle",
-        "title": "Sensor 2",
+        "title": "Kegerator Coil",
         "units": "°F",
         "prefix": "",
         "suffix": "",
@@ -234,8 +319,8 @@
         "styleRounded": true,
         "styleGlow": false,
         "className": "",
-        "x": 1000,
-        "y": 240,
+        "x": 1020,
+        "y": 160,
         "wires": []
     },
     {
@@ -256,6 +341,304 @@
         "wires": [
             [
                 "89a53a7521a28c6e"
+            ]
+        ]
+    },
+    {
+        "id": "6b8904ec0af6b115",
+        "type": "function",
+        "z": "1efd7cc3c71e09de",
+        "name": "function 1",
+        "func": "const { file: sensorId } = msg;\n\nconst knownSensors = await new Promise(resolve => global.get('knownSensors', resolve)) || {};\n\nif (!knownSensors[sensorId]) {\n    console.log('Found new sensor',sensorId);\n    knownSensors[sensorId] = 'New Sensor';\n    global.set('knownSensors', knownSensors);\n\n    msg.payload = knownSensors;\n    return msg;\n}\nreturn;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 60,
+        "wires": [
+            [
+                "1d4446b864e748ed"
+            ]
+        ]
+    },
+    {
+        "id": "1d4446b864e748ed",
+        "type": "ui-text",
+        "z": "1efd7cc3c71e09de",
+        "group": "31c3bbdb778e6274",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Sensors",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 1000,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "bd7539e8c96648f2",
+        "type": "ui-gauge",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "group": "9717d6b8e7174784",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Kegerator",
+        "units": "°F",
+        "prefix": "",
+        "suffix": "",
+        "segments": [],
+        "min": "60",
+        "max": "80",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1000,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "978eb36b96422f6c",
+        "type": "ui-gauge",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "group": "9717d6b8e7174784",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Fridge Water Sample",
+        "units": "°F",
+        "prefix": "",
+        "suffix": "",
+        "segments": [],
+        "min": "60",
+        "max": "80",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1040,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "2a49f5a09c811234",
+        "type": "ui-gauge",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "group": "92b99a777e7b2308",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Glycol Return",
+        "units": "°F",
+        "prefix": "",
+        "suffix": "",
+        "segments": [],
+        "min": "60",
+        "max": "80",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1020,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "d07942e060cae33b",
+        "type": "ui-gauge",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "group": "1150dfbc2542243a",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Freezer Coil",
+        "units": "°F",
+        "prefix": "",
+        "suffix": "",
+        "segments": [],
+        "min": "60",
+        "max": "80",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1010,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "1838a71a8221f3fa",
+        "type": "inject",
+        "z": "1efd7cc3c71e09de",
+        "name": "Reset",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 770,
+        "y": 300,
+        "wires": [
+            [
+                "10730fb5c08658b7",
+                "d7cae4a972371c10",
+                "bd7539e8c96648f2",
+                "978eb36b96422f6c",
+                "2a49f5a09c811234",
+                "d07942e060cae33b"
+            ]
+        ]
+    },
+    {
+        "id": "733634787f0f318b",
+        "type": "ui-text",
+        "z": "1efd7cc3c71e09de",
+        "group": "31c3bbdb778e6274",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Last Update",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 1010,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "9dc23e792fe52e3a",
+        "type": "function",
+        "z": "1efd7cc3c71e09de",
+        "name": "function 2",
+        "func": "msg.payload = new Date(msg.ts).toISOString();\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 80,
+        "wires": [
+            [
+                "733634787f0f318b"
+            ]
+        ]
+    },
+    {
+        "id": "adb1d333296cf1b4",
+        "type": "ui-text",
+        "z": "1efd7cc3c71e09de",
+        "group": "31c3bbdb778e6274",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Now",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 990,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "a23633967db43d44",
+        "type": "inject",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "props": [
+            {
+                "p": "ts",
+                "v": "",
+                "vt": "date"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 590,
+        "y": 380,
+        "wires": [
+            [
+                "3992b857cc3d9d40"
+            ]
+        ]
+    },
+    {
+        "id": "3992b857cc3d9d40",
+        "type": "function",
+        "z": "1efd7cc3c71e09de",
+        "name": "function 3",
+        "func": "msg.payload = new Date(msg.ts).toISOString();\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 380,
+        "wires": [
+            [
+                "adb1d333296cf1b4"
             ]
         ]
     }
