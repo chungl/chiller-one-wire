@@ -141,8 +141,8 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 600,
@@ -161,7 +161,7 @@
                 "vt": "date"
             }
         ],
-        "repeat": "5",
+        "repeat": "2",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
@@ -189,9 +189,22 @@
         "units": "°F",
         "prefix": "",
         "suffix": "",
-        "segments": [],
-        "min": "60",
-        "max": "80",
+        "segments": [
+            {
+                "from": "20",
+                "color": "#00ccff"
+            },
+            {
+                "from": "32",
+                "color": "#58f72b"
+            },
+            {
+                "from": "38",
+                "color": "#ffcd00"
+            }
+        ],
+        "min": "20",
+        "max": "50",
         "sizeThickness": 16,
         "sizeGap": 4,
         "sizeKeyThickness": 8,
@@ -310,9 +323,22 @@
         "units": "°F",
         "prefix": "",
         "suffix": "",
-        "segments": [],
-        "min": "60",
-        "max": "80",
+        "segments": [
+            {
+                "from": "20",
+                "color": "#00ccff"
+            },
+            {
+                "from": "32",
+                "color": "#58f72b"
+            },
+            {
+                "from": "38",
+                "color": "#ffcd00"
+            }
+        ],
+        "min": "20",
+        "max": "50",
         "sizeThickness": 16,
         "sizeGap": 4,
         "sizeKeyThickness": 8,
@@ -345,47 +371,6 @@
         ]
     },
     {
-        "id": "6b8904ec0af6b115",
-        "type": "function",
-        "z": "1efd7cc3c71e09de",
-        "name": "function 1",
-        "func": "const { file: sensorId } = msg;\n\nconst knownSensors = await new Promise(resolve => global.get('knownSensors', resolve)) || {};\n\nif (!knownSensors[sensorId]) {\n    console.log('Found new sensor',sensorId);\n    knownSensors[sensorId] = 'New Sensor';\n    global.set('knownSensors', knownSensors);\n\n    msg.payload = knownSensors;\n    return msg;\n}\nreturn;\n",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 420,
-        "y": 60,
-        "wires": [
-            [
-                "1d4446b864e748ed"
-            ]
-        ]
-    },
-    {
-        "id": "1d4446b864e748ed",
-        "type": "ui-text",
-        "z": "1efd7cc3c71e09de",
-        "group": "31c3bbdb778e6274",
-        "order": 0,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Sensors",
-        "format": "{{msg.payload}}",
-        "layout": "row-left",
-        "style": false,
-        "font": "",
-        "fontSize": 16,
-        "color": "#717171",
-        "className": "",
-        "x": 1000,
-        "y": 40,
-        "wires": []
-    },
-    {
         "id": "bd7539e8c96648f2",
         "type": "ui-gauge",
         "z": "1efd7cc3c71e09de",
@@ -400,9 +385,22 @@
         "units": "°F",
         "prefix": "",
         "suffix": "",
-        "segments": [],
-        "min": "60",
-        "max": "80",
+        "segments": [
+            {
+                "from": "20",
+                "color": "#00ccff"
+            },
+            {
+                "from": "32",
+                "color": "#58f72b"
+            },
+            {
+                "from": "38",
+                "color": "#ffcd00"
+            }
+        ],
+        "min": "20",
+        "max": "50",
         "sizeThickness": 16,
         "sizeGap": 4,
         "sizeKeyThickness": 8,
@@ -428,9 +426,22 @@
         "units": "°F",
         "prefix": "",
         "suffix": "",
-        "segments": [],
-        "min": "60",
-        "max": "80",
+        "segments": [
+            {
+                "from": "20",
+                "color": "#00ccff"
+            },
+            {
+                "from": "32",
+                "color": "#58f72b"
+            },
+            {
+                "from": "38",
+                "color": "#ffcd00"
+            }
+        ],
+        "min": "20",
+        "max": "50",
         "sizeThickness": 16,
         "sizeGap": 4,
         "sizeKeyThickness": 8,
@@ -456,9 +467,22 @@
         "units": "°F",
         "prefix": "",
         "suffix": "",
-        "segments": [],
-        "min": "60",
-        "max": "80",
+        "segments": [
+            {
+                "from": "20",
+                "color": "#00ccff"
+            },
+            {
+                "from": "32",
+                "color": "#58f72b"
+            },
+            {
+                "from": "38",
+                "color": "#ffcd00"
+            }
+        ],
+        "min": "20",
+        "max": "50",
         "sizeThickness": 16,
         "sizeGap": 4,
         "sizeKeyThickness": 8,
@@ -484,9 +508,22 @@
         "units": "°F",
         "prefix": "",
         "suffix": "",
-        "segments": [],
-        "min": "60",
-        "max": "80",
+        "segments": [
+            {
+                "from": "20",
+                "color": "#00ccff"
+            },
+            {
+                "from": "32",
+                "color": "#58f72b"
+            },
+            {
+                "from": "38",
+                "color": "#ffcd00"
+            }
+        ],
+        "min": "20",
+        "max": "50",
         "sizeThickness": 16,
         "sizeGap": 4,
         "sizeKeyThickness": 8,
