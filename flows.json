@@ -1,1 +1,262 @@
-[]
+[
+    {
+        "id": "1efd7cc3c71e09de",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0554f48b4c31f562",
+        "type": "ui-base",
+        "name": "Dashboard",
+        "path": "/dashboard",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": true
+    },
+    {
+        "id": "bcd1d9f7e4bee09e",
+        "type": "ui-theme",
+        "name": "Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094ce",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "ff688e6db65990bd",
+        "type": "ui-page",
+        "name": "Dashboard",
+        "ui": "0554f48b4c31f562",
+        "path": "",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "bcd1d9f7e4bee09e",
+        "order": -1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "92b99a777e7b2308",
+        "type": "ui-group",
+        "name": "Chart Group",
+        "page": "ff688e6db65990bd",
+        "width": "6",
+        "height": "1",
+        "order": -1,
+        "showTitle": false,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "a078bc0c7301c768",
+        "type": "rpi-ds18b20",
+        "z": "1efd7cc3c71e09de",
+        "topic": "",
+        "array": false,
+        "name": "",
+        "x": 250,
+        "y": 180,
+        "wires": [
+            [
+                "6db80055ea16ed14"
+            ]
+        ]
+    },
+    {
+        "id": "19cf4c30ae84fad0",
+        "type": "debug",
+        "z": "1efd7cc3c71e09de",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "74bcbed03a01a3f9",
+        "type": "inject",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "props": [
+            {
+                "p": "ts",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 110,
+        "y": 180,
+        "wires": [
+            [
+                "a078bc0c7301c768"
+            ]
+        ]
+    },
+    {
+        "id": "10730fb5c08658b7",
+        "type": "ui-gauge",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "group": "92b99a777e7b2308",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Sensor 1",
+        "units": "°F",
+        "prefix": "",
+        "suffix": "",
+        "segments": [],
+        "min": "60",
+        "max": "80",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1000,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "6db80055ea16ed14",
+        "type": "change",
+        "z": "1efd7cc3c71e09de",
+        "name": "C to F",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "msg.payload*9/5 + 32",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 410,
+        "y": 180,
+        "wires": [
+            [
+                "19cf4c30ae84fad0",
+                "e9aef335fa56de79"
+            ]
+        ]
+    },
+    {
+        "id": "89a53a7521a28c6e",
+        "type": "switch",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "property": "file",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "28-3ce1d4438190",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "28-3ce1d4433942",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 770,
+        "y": 180,
+        "wires": [
+            [
+                "10730fb5c08658b7"
+            ],
+            [
+                "d7cae4a972371c10"
+            ]
+        ]
+    },
+    {
+        "id": "d7cae4a972371c10",
+        "type": "ui-gauge",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "group": "92b99a777e7b2308",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Sensor 2",
+        "units": "°F",
+        "prefix": "",
+        "suffix": "",
+        "segments": [],
+        "min": "60",
+        "max": "80",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1000,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "e9aef335fa56de79",
+        "type": "calculator",
+        "z": "1efd7cc3c71e09de",
+        "name": "Round",
+        "inputMsgField": "payload",
+        "outputMsgField": "payload",
+        "operation": "mult",
+        "constant": "1",
+        "round": true,
+        "truncate": false,
+        "decimals": "1",
+        "decimals2": 0,
+        "x": 590,
+        "y": 180,
+        "wires": [
+            [
+                "89a53a7521a28c6e"
+            ]
+        ]
+    }
+]
