@@ -58,7 +58,7 @@
         "page": "ff688e6db65990bd",
         "width": "2",
         "height": "4",
-        "order": 1,
+        "order": 2,
         "showTitle": true,
         "className": "",
         "visible": "true",
@@ -84,7 +84,7 @@
         "page": "ff688e6db65990bd",
         "width": "2",
         "height": "4",
-        "order": 2,
+        "order": 3,
         "showTitle": true,
         "className": "",
         "visible": "true",
@@ -97,7 +97,7 @@
         "page": "ff688e6db65990bd",
         "width": "2",
         "height": "4",
-        "order": 3,
+        "order": 1,
         "showTitle": true,
         "className": "",
         "visible": "true",
@@ -627,7 +627,7 @@
         "color": "#717171",
         "className": "",
         "x": 990,
-        "y": 380,
+        "y": 40,
         "wires": []
     },
     {
@@ -651,8 +651,8 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 590,
-        "y": 380,
+        "x": 410,
+        "y": 40,
         "wires": [
             [
                 "3992b857cc3d9d40"
@@ -671,11 +671,266 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 800,
-        "y": 380,
+        "x": 620,
+        "y": 40,
         "wires": [
             [
                 "adb1d333296cf1b4"
+            ]
+        ]
+    },
+    {
+        "id": "563b43c6967a20f7",
+        "type": "rpi-gpio out",
+        "z": "1efd7cc3c71e09de",
+        "name": "Pump -",
+        "pin": "26",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "bcm": true,
+        "x": 380,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "7225d65199aec1d1",
+        "type": "ui-switch",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "label": "Pump",
+        "group": "92b99a777e7b2308",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "className": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 450,
+        "y": 680,
+        "wires": [
+            [
+                "c5be5891b150f2b6",
+                "75c5e52cdff53af0",
+                "b76514b0598b3055"
+            ]
+        ]
+    },
+    {
+        "id": "c5be5891b150f2b6",
+        "type": "rpi-gpio out",
+        "z": "1efd7cc3c71e09de",
+        "name": "Pump +",
+        "pin": "19",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "bcm": true,
+        "x": 680,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "eb4351f291021d1d",
+        "type": "rpi-gpio out",
+        "z": "1efd7cc3c71e09de",
+        "name": "Glycol Recirc -",
+        "pin": "13",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "bcm": true,
+        "x": 400,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "4cc6ea47a19e1105",
+        "type": "rpi-gpio out",
+        "z": "1efd7cc3c71e09de",
+        "name": "Glycol Recirc -",
+        "pin": "6",
+        "set": true,
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "bcm": true,
+        "x": 700,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "f2dd82cb284c8f90",
+        "type": "ui-switch",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "label": "Glycol Recirc",
+        "group": "9717d6b8e7174784",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "className": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 450,
+        "y": 820,
+        "wires": [
+            [
+                "bbe31ea084f7d6ed",
+                "4cc6ea47a19e1105"
+            ]
+        ]
+    },
+    {
+        "id": "bbe31ea084f7d6ed",
+        "type": "switch",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 270,
+        "y": 680,
+        "wires": [
+            [
+                "7225d65199aec1d1"
+            ]
+        ]
+    },
+    {
+        "id": "75c5e52cdff53af0",
+        "type": "debug",
+        "z": "1efd7cc3c71e09de",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "4366f0d91885af2b",
+        "type": "inject",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 130,
+        "y": 580,
+        "wires": [
+            [
+                "563b43c6967a20f7",
+                "eb4351f291021d1d",
+                "7225d65199aec1d1"
+            ]
+        ]
+    },
+    {
+        "id": "b76514b0598b3055",
+        "type": "switch",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "0",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 670,
+        "y": 740,
+        "wires": [
+            [
+                "f2dd82cb284c8f90",
+                "485a04c4285f945c"
+            ]
+        ]
+    },
+    {
+        "id": "485a04c4285f945c",
+        "type": "ui-switch",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "label": "Fermentor",
+        "group": "02821af719429a34",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "className": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "x": 450,
+        "y": 900,
+        "wires": [
+            [
+                "bbe31ea084f7d6ed"
             ]
         ]
     }
