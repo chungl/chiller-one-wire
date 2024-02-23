@@ -58,7 +58,7 @@
         "page": "ff688e6db65990bd",
         "width": "2",
         "height": "4",
-        "order": 2,
+        "order": 1,
         "showTitle": true,
         "className": "",
         "visible": "true",
@@ -97,7 +97,7 @@
         "page": "ff688e6db65990bd",
         "width": "2",
         "height": "4",
-        "order": 1,
+        "order": 2,
         "showTitle": true,
         "className": "",
         "visible": "true",
@@ -239,7 +239,8 @@
         "wires": [
             [
                 "19cf4c30ae84fad0",
-                "e9aef335fa56de79"
+                "7a83f0ffb45f9e01",
+                "e1173b0f55798df8"
             ]
         ]
     },
@@ -298,7 +299,7 @@
                 "bd7539e8c96648f2"
             ],
             [
-                "978eb36b96422f6c"
+                "9d62b7bf49b0c39e"
             ],
             [
                 "2a49f5a09c811234"
@@ -314,7 +315,7 @@
         "z": "1efd7cc3c71e09de",
         "name": "",
         "group": "9717d6b8e7174784",
-        "order": 0,
+        "order": 1,
         "width": 0,
         "height": 0,
         "gtype": "gauge-half",
@@ -350,33 +351,12 @@
         "wires": []
     },
     {
-        "id": "e9aef335fa56de79",
-        "type": "calculator",
-        "z": "1efd7cc3c71e09de",
-        "name": "Round",
-        "inputMsgField": "payload",
-        "outputMsgField": "payload",
-        "operation": "mult",
-        "constant": "1",
-        "round": true,
-        "truncate": false,
-        "decimals": "1",
-        "decimals2": 0,
-        "x": 590,
-        "y": 180,
-        "wires": [
-            [
-                "89a53a7521a28c6e"
-            ]
-        ]
-    },
-    {
         "id": "bd7539e8c96648f2",
         "type": "ui-gauge",
         "z": "1efd7cc3c71e09de",
         "name": "",
         "group": "9717d6b8e7174784",
-        "order": 0,
+        "order": 2,
         "width": 0,
         "height": 0,
         "gtype": "gauge-half",
@@ -417,7 +397,7 @@
         "z": "1efd7cc3c71e09de",
         "name": "",
         "group": "9717d6b8e7174784",
-        "order": 0,
+        "order": 3,
         "width": 0,
         "height": 0,
         "gtype": "gauge-half",
@@ -448,7 +428,7 @@
         "styleRounded": true,
         "styleGlow": false,
         "className": "",
-        "x": 1040,
+        "x": 1220,
         "y": 240,
         "wires": []
     },
@@ -705,8 +685,8 @@
         "width": 0,
         "height": 0,
         "passthru": true,
-        "topic": "topic",
-        "topicType": "msg",
+        "topic": "pump_status",
+        "topicType": "str",
         "style": "",
         "className": "",
         "onvalue": "true",
@@ -723,7 +703,8 @@
             [
                 "c5be5891b150f2b6",
                 "75c5e52cdff53af0",
-                "b76514b0598b3055"
+                "b76514b0598b3055",
+                "52ddf34c1d3b3521"
             ]
         ]
     },
@@ -779,12 +760,12 @@
         "name": "",
         "label": "Glycol Recirc",
         "group": "9717d6b8e7174784",
-        "order": 0,
+        "order": 4,
         "width": 0,
         "height": 0,
         "passthru": true,
-        "topic": "topic",
-        "topicType": "msg",
+        "topic": "kegerator_coil_status",
+        "topicType": "str",
         "style": "",
         "className": "",
         "onvalue": "true",
@@ -800,7 +781,8 @@
         "wires": [
             [
                 "bbe31ea084f7d6ed",
-                "4cc6ea47a19e1105"
+                "4cc6ea47a19e1105",
+                "52ddf34c1d3b3521"
             ]
         ]
     },
@@ -838,8 +820,8 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 680,
@@ -865,8 +847,8 @@
         "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "0",
-        "payloadType": "num",
+        "payload": "false",
+        "payloadType": "bool",
         "x": 130,
         "y": 580,
         "wires": [
@@ -914,8 +896,8 @@
         "width": 0,
         "height": 0,
         "passthru": true,
-        "topic": "topic",
-        "topicType": "msg",
+        "topic": "fermentor_status",
+        "topicType": "str",
         "style": "",
         "className": "",
         "onvalue": "true",
@@ -930,7 +912,244 @@
         "y": 900,
         "wires": [
             [
-                "bbe31ea084f7d6ed"
+                "bbe31ea084f7d6ed",
+                "52ddf34c1d3b3521"
+            ]
+        ]
+    },
+    {
+        "id": "7a83f0ffb45f9e01",
+        "type": "smooth",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "property": "payload",
+        "action": "low",
+        "count": "6",
+        "round": "1",
+        "mult": "multi",
+        "reduce": false,
+        "x": 600,
+        "y": 180,
+        "wires": [
+            [
+                "89a53a7521a28c6e"
+            ]
+        ]
+    },
+    {
+        "id": "9d62b7bf49b0c39e",
+        "type": "smooth",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "property": "payload",
+        "action": "low",
+        "count": "10",
+        "round": "1",
+        "mult": "single",
+        "reduce": false,
+        "x": 1000,
+        "y": 240,
+        "wires": [
+            [
+                "978eb36b96422f6c"
+            ]
+        ]
+    },
+    {
+        "id": "19b111f880beef01",
+        "type": "inject",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "240",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.5",
+        "topic": "Pulse",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 130,
+        "y": 420,
+        "wires": [
+            [
+                "036536be1866527c",
+                "6663dfc993539d75",
+                "f2dd82cb284c8f90"
+            ]
+        ]
+    },
+    {
+        "id": "036536be1866527c",
+        "type": "debug",
+        "z": "1efd7cc3c71e09de",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "6663dfc993539d75",
+        "type": "delay",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "50",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 280,
+        "y": 440,
+        "wires": [
+            [
+                "21b33b54f880591f"
+            ]
+        ]
+    },
+    {
+        "id": "21b33b54f880591f",
+        "type": "change",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "false",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 440,
+        "wires": [
+            [
+                "036536be1866527c",
+                "7225d65199aec1d1"
+            ]
+        ]
+    },
+    {
+        "id": "fce6b57151b22b5e",
+        "type": "file",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "filename": "filename",
+        "filenameType": "msg",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 1480,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2ae76ff66b00d316",
+        "type": "function",
+        "z": "1efd7cc3c71e09de",
+        "name": "function 4",
+        "func": "msg.filename = `/home/casey/data/pitemps/${msg.topic}-` + new Date().toISOString().slice(0, 10)\n + '.json'\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1260,
+        "y": 380,
+        "wires": [
+            [
+                "fce6b57151b22b5e"
+            ]
+        ]
+    },
+    {
+        "id": "e1173b0f55798df8",
+        "type": "function",
+        "z": "1efd7cc3c71e09de",
+        "name": "function 5",
+        "func": "\nmsg.payload = {\n    ts: new Date(msg.ts).toISOString(),\n    temp: msg.payload,\n    unit: 'F'\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 380,
+        "wires": [
+            [
+                "2ae76ff66b00d316"
+            ]
+        ]
+    },
+    {
+        "id": "080ed1f3e70a4007",
+        "type": "function",
+        "z": "1efd7cc3c71e09de",
+        "name": "function 6",
+        "func": "msg.filename = `/home/casey/data/glycol/${msg.topic}-` + new Date().toISOString().slice(0, 10)\n + '.json'\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1260,
+        "y": 620,
+        "wires": [
+            [
+                "fce6b57151b22b5e"
+            ]
+        ]
+    },
+    {
+        "id": "52ddf34c1d3b3521",
+        "type": "function",
+        "z": "1efd7cc3c71e09de",
+        "name": "function 7",
+        "func": "\nmsg.payload = {\n    ts: new Date().toISOString(),\n    on: msg.payload\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1020,
+        "y": 620,
+        "wires": [
+            [
+                "080ed1f3e70a4007"
             ]
         ]
     }
