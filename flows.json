@@ -117,6 +117,24 @@
         "disabled": "false"
     },
     {
+        "id": "3685fac23107d13d",
+        "type": "websocket-client",
+        "path": "ws://tiltpi.local:1880/ws/tilt",
+        "tls": "",
+        "wholemsg": "true",
+        "hb": "0",
+        "subprotocol": ""
+    },
+    {
+        "id": "4eeb9de08e9f4ac5",
+        "type": "websocket-client",
+        "path": "ws://ws.ifelse.io",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": ""
+    },
+    {
         "id": "a078bc0c7301c768",
         "type": "rpi-ds18b20",
         "z": "1efd7cc3c71e09de",
@@ -195,11 +213,11 @@
                 "color": "#00ccff"
             },
             {
-                "from": "32",
+                "from": "25",
                 "color": "#58f72b"
             },
             {
-                "from": "38",
+                "from": "35",
                 "color": "#ffcd00"
             }
         ],
@@ -327,10 +345,6 @@
         "segments": [
             {
                 "from": "20",
-                "color": "#00ccff"
-            },
-            {
-                "from": "32",
                 "color": "#58f72b"
             },
             {
@@ -367,19 +381,19 @@
         "suffix": "",
         "segments": [
             {
-                "from": "20",
+                "from": "32",
                 "color": "#00ccff"
             },
             {
-                "from": "32",
+                "from": "37",
                 "color": "#58f72b"
             },
             {
-                "from": "38",
+                "from": "39",
                 "color": "#ffcd00"
             }
         ],
-        "min": "20",
+        "min": "32",
         "max": "50",
         "sizeThickness": 16,
         "sizeGap": 4,
@@ -408,19 +422,19 @@
         "suffix": "",
         "segments": [
             {
-                "from": "20",
+                "from": "32",
                 "color": "#00ccff"
             },
             {
-                "from": "32",
+                "from": "37",
                 "color": "#58f72b"
             },
             {
-                "from": "38",
+                "from": "39",
                 "color": "#ffcd00"
             }
         ],
-        "min": "20",
+        "min": "32",
         "max": "50",
         "sizeThickness": 16,
         "sizeGap": 4,
@@ -453,11 +467,11 @@
                 "color": "#00ccff"
             },
             {
-                "from": "32",
+                "from": "30",
                 "color": "#58f72b"
             },
             {
-                "from": "38",
+                "from": "40",
                 "color": "#ffcd00"
             }
         ],
@@ -494,11 +508,11 @@
                 "color": "#00ccff"
             },
             {
-                "from": "32",
+                "from": "25",
                 "color": "#58f72b"
             },
             {
-                "from": "38",
+                "from": "35",
                 "color": "#ffcd00"
             }
         ],
@@ -892,7 +906,7 @@
         "name": "",
         "label": "Fermentor",
         "group": "02821af719429a34",
-        "order": 0,
+        "order": 3,
         "width": 0,
         "height": 0,
         "passthru": true,
@@ -976,7 +990,7 @@
         "topic": "Pulse",
         "payload": "true",
         "payloadType": "bool",
-        "x": 130,
+        "x": 110,
         "y": 420,
         "wires": [
             [
@@ -1150,6 +1164,188 @@
         "wires": [
             [
                 "080ed1f3e70a4007"
+            ]
+        ]
+    },
+    {
+        "id": "0ec28ad35b2a3c52",
+        "type": "websocket in",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "server": "",
+        "client": "3685fac23107d13d",
+        "x": 1290,
+        "y": 40,
+        "wires": [
+            [
+                "ff4fe5ec72581072",
+                "8a903e953f56c62f"
+            ]
+        ]
+    },
+    {
+        "id": "c0c670bed0b0f6b0",
+        "type": "ui-gauge",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "group": "02821af719429a34",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gauge-half",
+        "gstyle": "needle",
+        "title": "Fermentor",
+        "units": "°F",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "55",
+                "color": "#00ccff"
+            },
+            {
+                "from": "64",
+                "color": "#58f72b"
+            },
+            {
+                "from": "70",
+                "color": "#ffcd00"
+            }
+        ],
+        "min": "55",
+        "max": "75",
+        "sizeThickness": 16,
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 1690,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "83583412c0d71cda",
+        "type": "random",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "low": "40",
+        "high": "60",
+        "inte": "true",
+        "property": "payload",
+        "x": 1500,
+        "y": 120,
+        "wires": [
+            [
+                "a391687a0d2ffd87"
+            ]
+        ]
+    },
+    {
+        "id": "a391687a0d2ffd87",
+        "type": "websocket out",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "server": "",
+        "client": "4eeb9de08e9f4ac5",
+        "x": 1700,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "a2d82437d76edbe4",
+        "type": "inject",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1290,
+        "y": 100,
+        "wires": [
+            [
+                "83583412c0d71cda"
+            ]
+        ]
+    },
+    {
+        "id": "ff4fe5ec72581072",
+        "type": "change",
+        "z": "1efd7cc3c71e09de",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.displayTemp",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1520,
+        "y": 40,
+        "wires": [
+            [
+                "c0c670bed0b0f6b0"
+            ]
+        ]
+    },
+    {
+        "id": "180f7daaa4264a57",
+        "type": "ui-text",
+        "z": "1efd7cc3c71e09de",
+        "group": "02821af719429a34",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 1670,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "8a903e953f56c62f",
+        "type": "function",
+        "z": "1efd7cc3c71e09de",
+        "name": "function 8",
+        "func": "msg.payload = new Date().toISOString();\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1500,
+        "y": 80,
+        "wires": [
+            [
+                "180f7daaa4264a57"
             ]
         ]
     }
