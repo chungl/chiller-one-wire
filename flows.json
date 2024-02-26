@@ -48,6 +48,14 @@
         "env": []
     },
     {
+        "id": "2ed932e01bfcb9f9",
+        "type": "tab",
+        "label": "Switchbot",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "30bc1a5687a82b59",
         "type": "tab",
         "label": "Utils",
@@ -65,7 +73,7 @@
             "ui-notification",
             "ui-control"
         ],
-        "showPathInSidebar": true
+        "showPathInSidebar": false
     },
     {
         "id": "bcd1d9f7e4bee09e",
@@ -154,10 +162,10 @@
     {
         "id": "02821af719429a34",
         "type": "ui-group",
-        "name": "Fermenter",
+        "name": "Fermentor",
         "page": "ff688e6db65990bd",
         "width": "2",
-        "height": "4",
+        "height": "3",
         "order": 4,
         "showTitle": true,
         "className": "",
@@ -172,6 +180,26 @@
         "wholemsg": "true",
         "hb": "0",
         "subprotocol": ""
+    },
+    {
+        "id": "9fc8b50ddcf509c4",
+        "type": "websocket-listener",
+        "path": "/ws/tilt",
+        "wholemsg": "true"
+    },
+    {
+        "id": "cf880b6879da734f",
+        "type": "ui-page",
+        "name": "Settings",
+        "ui": "0554f48b4c31f562",
+        "path": "/settings",
+        "icon": "settings",
+        "layout": "grid",
+        "theme": "bcd1d9f7e4bee09e",
+        "order": -1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
     },
     {
         "id": "a078bc0c7301c768",
@@ -237,7 +265,7 @@
         "z": "1efd7cc3c71e09de",
         "name": "",
         "group": "92b99a777e7b2308",
-        "order": 0,
+        "order": 1,
         "width": 0,
         "height": 0,
         "gtype": "gauge-half",
@@ -491,7 +519,7 @@
         "z": "1efd7cc3c71e09de",
         "name": "",
         "group": "92b99a777e7b2308",
-        "order": 0,
+        "order": 2,
         "width": 0,
         "height": 0,
         "gtype": "gauge-half",
@@ -685,7 +713,7 @@
         "name": "",
         "property": "payload",
         "action": "low",
-        "count": "6",
+        "count": "7",
         "round": "1",
         "mult": "multi",
         "reduce": false,
@@ -1177,7 +1205,7 @@
         "name": "",
         "label": "Pump",
         "group": "92b99a777e7b2308",
-        "order": 0,
+        "order": 3,
         "width": 0,
         "height": 0,
         "passthru": true,
@@ -1510,8 +1538,8 @@
         "septopics": true,
         "property": "payload",
         "topi": "topic",
-        "x": 1390,
-        "y": 560,
+        "x": 1410,
+        "y": 620,
         "wires": [
             [
                 "e96ef82f8d26a9a0"
@@ -1525,10 +1553,11 @@
         "name": "outputs_changed",
         "mode": "link",
         "links": [
-            "d3c2f7ba85e44a35"
+            "d3c2f7ba85e44a35",
+            "90bd5236ddb1b7fb"
         ],
-        "x": 1485,
-        "y": 560,
+        "x": 1505,
+        "y": 620,
         "wires": []
     },
     {
@@ -5747,7 +5776,7 @@
         "name": "",
         "label": "Pulse",
         "group": "92b99a777e7b2308",
-        "order": 0,
+        "order": 4,
         "width": 0,
         "height": 0,
         "passthru": false,
@@ -6771,7 +6800,7 @@
         "z": "22b47086be4f7484",
         "name": "",
         "group": "92b99a777e7b2308",
-        "order": 0,
+        "order": 5,
         "width": 0,
         "height": 0,
         "gtype": "gauge-half",
@@ -8313,6 +8342,1186 @@
         ]
     },
     {
+        "id": "49d9f732.f40398",
+        "type": "function",
+        "z": "2ed932e01bfcb9f9",
+        "name": "List Devices",
+        "func": "const {https} = context.global;\n\nconst {token, signature, nonce, t} = msg;\n\nmsg.topic = 'switchbot_devices'\n\nconst options = {\n    hostname: 'api.switch-bot.com',\n    port: 443,\n    path: `/v1.1/devices/`,\n    method: 'GET',\n    headers: {\n        \"Authorization\": token,\n        \"sign\": signature,\n        \"nonce\": nonce,\n        \"t\": t\n    },\n};\n\nconst response = await new Promise((resolve, reject) => {\n    const req = https.request(options, res => {\n        node.log(`statusCode: ${res.statusCode}`);\n        res.setEncoding('utf-8');\n        let body = ''\n        res.on('data', d => {\n            body += d\n        });\n        res.on('end', () => resolve(body));\n    });\n\n    req.on('error', error => {\n        console.error(error);\n        reject(error);\n    });\n\n    req.end();\n});\nmsg.payload=response;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 160,
+        "wires": [
+            [
+                "d04f1fb3f0d4d7d1"
+            ]
+        ]
+    },
+    {
+        "id": "8afc1079b3d25b27",
+        "type": "debug",
+        "z": "2ed932e01bfcb9f9",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 440,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "354fe0d6073b585d",
+        "type": "inject",
+        "z": "2ed932e01bfcb9f9",
+        "d": true,
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "30",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 360,
+        "wires": [
+            [
+                "8afc1079b3d25b27",
+                "e35da4e36f3aad13"
+            ]
+        ]
+    },
+    {
+        "id": "e35da4e36f3aad13",
+        "type": "function",
+        "z": "2ed932e01bfcb9f9",
+        "name": "Poll Compressor",
+        "func": "const {crypto,https} = context.global;\n// const https = require('https');\n\nconsole.log({msg});\nconst token = flow.get('switchbotToken');\nconst secret = flow.get(\"switchbotSecret\");\nconst t = Date.now();\nconst nonce = \"requestID\";\nconst data = token + t + nonce;\nconst signTerm = crypto.createHmac('sha256', secret)\n    .update(Buffer.from(data, 'utf-8'))\n    .digest();\nconst sign = signTerm.toString(\"base64\");\nconsole.log({token, secret, signature: sign, msg});\n\nconst deviceId = \"68B6B3AFDD9A\";\n\nconst options = {\n    hostname: 'api.switch-bot.com',\n    port: 443,\n    path: `/v1.1/devices/${deviceId}/status`,\n    method: 'GET',\n    headers: {\n        \"Authorization\": token,\n        \"sign\": sign,\n        \"nonce\": nonce,\n        \"t\": t,\n    },\n};\n\nconst ts = new Date().toISOString();\n\nconst response = await new Promise((resolve, reject) => {\n    const req = https.request(options, res => {\n        node.log(`statusCode: ${res.statusCode}`);\n        res.setEncoding('utf-8');\n        let body = ''\n        res.on('data', d => {\n            body += d\n        });\n        res.on('end', () => resolve(body));\n    });\n\n    req.on('error', error => {\n        console.error(error);\n        reject(error);\n    });\n\n    req.end();\n})\n.then(body => JSON.parse(body))\n.then(body => {\n    body.ts = ts;\n    return body\n})\n.then(body => JSON.stringify(body));\n\nmsg.payload=response;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 420,
+        "wires": [
+            [
+                "55cf4a4cd6463fdd",
+                "0fc720ed2661e137"
+            ]
+        ]
+    },
+    {
+        "id": "b947e5288c8c05a7",
+        "type": "inject",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 200,
+        "y": 160,
+        "wires": [
+            [
+                "5bef21c0c407ef3e"
+            ]
+        ]
+    },
+    {
+        "id": "d04f1fb3f0d4d7d1",
+        "type": "debug",
+        "z": "2ed932e01bfcb9f9",
+        "name": "Switchbot device list",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "55cf4a4cd6463fdd",
+        "type": "debug",
+        "z": "2ed932e01bfcb9f9",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "ebd732845449ae0e",
+        "type": "file",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "filename": "filename",
+        "filenameType": "msg",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 900,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0fc720ed2661e137",
+        "type": "function",
+        "z": "2ed932e01bfcb9f9",
+        "name": "function 1",
+        "func": "msg.filename = '/home/pi/switchbot/compressor-' + new Date().toISOString().slice(0, 10)\n + '.json'\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 420,
+        "wires": [
+            [
+                "ebd732845449ae0e"
+            ]
+        ]
+    },
+    {
+        "id": "63030505b2958208",
+        "type": "debug",
+        "z": "2ed932e01bfcb9f9",
+        "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 430,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "61e6c3f7b2e49483",
+        "type": "inject",
+        "z": "2ed932e01bfcb9f9",
+        "d": true,
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "15",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 200,
+        "y": 500,
+        "wires": [
+            [
+                "63030505b2958208",
+                "01a9b74038f77633"
+            ]
+        ]
+    },
+    {
+        "id": "01a9b74038f77633",
+        "type": "function",
+        "z": "2ed932e01bfcb9f9",
+        "name": "Poll Power Supply",
+        "func": "const {crypto,https} = context.global;\n// const https = require('https');\n\nconsole.log({msg});\nconst token = flow.get('switchbotToken');\nconst secret = flow.get(\"switchbotSecret\");\nconst t = Date.now();\nconst nonce = \"requestID\";\nconst data = token + t + nonce;\nconst signTerm = crypto.createHmac('sha256', secret)\n    .update(Buffer.from(data, 'utf-8'))\n    .digest();\nconst sign = signTerm.toString(\"base64\");\nconsole.log({token, secret, signature: sign, msg});\n\nconst deviceId = \"68B6B3B3BEB6\";\n\nconst options = {\n    hostname: 'api.switch-bot.com',\n    port: 443,\n    path: `/v1.1/devices/${deviceId}/status`,\n    method: 'GET',\n    headers: {\n        \"Authorization\": token,\n        \"sign\": sign,\n        \"nonce\": nonce,\n        \"t\": t,\n    },\n};\n\nconst ts = new Date().toISOString();\n\nconst response = await new Promise((resolve, reject) => {\n    const req = https.request(options, res => {\n        node.log(`statusCode: ${res.statusCode}`);\n        res.setEncoding('utf-8');\n        let body = ''\n        res.on('data', d => {\n            body += d\n        });\n        res.on('end', () => resolve(body));\n    });\n\n    req.on('error', error => {\n        console.error(error);\n        reject(error);\n    });\n\n    req.end();\n})\n.then(body => JSON.parse(body))\n.then(body => {\n    body.ts = ts;\n    return body\n})\n.then(body => JSON.stringify(body));\n\nmsg.payload=response;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 560,
+        "wires": [
+            [
+                "2a0f1e7fb902d3bb",
+                "b29386c209d8ada7"
+            ]
+        ]
+    },
+    {
+        "id": "2a0f1e7fb902d3bb",
+        "type": "debug",
+        "z": "2ed932e01bfcb9f9",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "278f878ca3e3a664",
+        "type": "file",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "filename": "filename",
+        "filenameType": "msg",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 890,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b29386c209d8ada7",
+        "type": "function",
+        "z": "2ed932e01bfcb9f9",
+        "name": "function 2",
+        "func": "msg.filename = '/home/pi/switchbot/pump-' + new Date().toISOString().slice(0, 10)\n + '.json'\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 690,
+        "y": 560,
+        "wires": [
+            [
+                "278f878ca3e3a664"
+            ]
+        ]
+    },
+    {
+        "id": "19f7a76b.efbfc9",
+        "type": "function",
+        "z": "2ed932e01bfcb9f9",
+        "name": "Set Plug",
+        "func": "const {https} = context.global;\n\nconst {topic, payload, token, signature, nonce, t} = msg;\n\nconst body = JSON.stringify({\n    \"command\": msg.payload ? \"turnOn\" : \"turnOff\",\n    \"parameter\": \"default\",\n    \"commandType\": \"command\"\n});\n\nconst options = {\n    hostname: 'api.switch-bot.com',\n    port: 443,\n    path: `/v1.1/devices/${topic}/commands`,\n    method: 'POST',\n    headers: {\n        \"Authorization\": token,\n        \"sign\": signature,\n        \"nonce\": nonce,\n        \"t\": t,\n        'Content-Type': 'application/json',\n        'Content-Length': body.length,\n    },\n};\n\nconst response = await new Promise((resolve, reject) => {\n    const req = https.request(options, res => {\n        node.log(`statusCode: ${res.statusCode}`);\n        res.on('data', d => {\n            node.log(d);\n            resolve(d);\n        });\n    });\n\n    req.on('error', error => {\n        console.error(error);\n        reject(error);\n    });\n\n    req.write(body);\n    req.end();\n\n}).catch(err => {\n    msg.payload = false;\n    return msg;\n})\n\nmsg.payload = true;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 100,
+        "wires": [
+            [
+                "f1bdeec3f1a3bc02"
+            ]
+        ]
+    },
+    {
+        "id": "1c4de67d5fd894a8",
+        "type": "link in",
+        "z": "2ed932e01bfcb9f9",
+        "name": "set_plug",
+        "links": [],
+        "x": 145,
+        "y": 100,
+        "wires": [
+            [
+                "d9cdcef74c30f172"
+            ]
+        ]
+    },
+    {
+        "id": "f1bdeec3f1a3bc02",
+        "type": "link out",
+        "z": "2ed932e01bfcb9f9",
+        "name": "link out 37",
+        "mode": "return",
+        "links": [],
+        "x": 685,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "5d8219dc2633f0bf",
+        "type": "function",
+        "z": "2ed932e01bfcb9f9",
+        "name": "Generate signature",
+        "func": "const {crypto} = context.global;\n\nconst {token, secret} = msg\nconst t = Date.now();\nconst nonce = \"requestID\";\nconst data = token + t + nonce;\nconst signTerm = crypto.createHmac('sha256', secret)\n    .update(Buffer.from(data, 'utf-8'))\n    .digest();\nconst sign = signTerm.toString(\"base64\");\n\nmsg.t = t;\nmsg.nonce = nonce;\nmsg.signature = sign;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 40,
+        "wires": [
+            [
+                "e2f94421aa8c1566"
+            ]
+        ]
+    },
+    {
+        "id": "74f34669ce87b21a",
+        "type": "link in",
+        "z": "2ed932e01bfcb9f9",
+        "name": "sign",
+        "links": [],
+        "x": 145,
+        "y": 40,
+        "wires": [
+            [
+                "667409b7943be910"
+            ]
+        ]
+    },
+    {
+        "id": "e2f94421aa8c1566",
+        "type": "link out",
+        "z": "2ed932e01bfcb9f9",
+        "name": "link out 38",
+        "mode": "return",
+        "links": [],
+        "x": 685,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "d9cdcef74c30f172",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "74f34669ce87b21a"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 450,
+        "y": 100,
+        "wires": [
+            [
+                "19f7a76b.efbfc9"
+            ]
+        ]
+    },
+    {
+        "id": "5bef21c0c407ef3e",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "74f34669ce87b21a"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 330,
+        "y": 160,
+        "wires": [
+            [
+                "49d9f732.f40398"
+            ]
+        ]
+    },
+    {
+        "id": "667409b7943be910",
+        "type": "credentials",
+        "z": "2ed932e01bfcb9f9",
+        "name": "Switchbot Credentials",
+        "props": [
+            {
+                "value": "token",
+                "type": "msg"
+            },
+            {
+                "value": "secret",
+                "type": "msg"
+            }
+        ],
+        "x": 280,
+        "y": 40,
+        "wires": [
+            [
+                "5d8219dc2633f0bf"
+            ]
+        ]
+    },
+    {
+        "id": "0ab5cb955af5b676",
+        "type": "link in",
+        "z": "2ed932e01bfcb9f9",
+        "name": "/switchbot/",
+        "links": [],
+        "x": 1005,
+        "y": 40,
+        "wires": [
+            [
+                "3f6a9167266f8634"
+            ]
+        ]
+    },
+    {
+        "id": "3f6a9167266f8634",
+        "type": "change",
+        "z": "2ed932e01bfcb9f9",
+        "name": "/switchbot/",
+        "rules": [
+            {
+                "t": "set",
+                "p": "scope",
+                "pt": "msg",
+                "to": "switchbot",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1120,
+        "y": 40,
+        "wires": [
+            [
+                "d1ae3864f906a23d"
+            ]
+        ]
+    },
+    {
+        "id": "0e6862c3b431f881",
+        "type": "link out",
+        "z": "2ed932e01bfcb9f9",
+        "name": "link out 40",
+        "mode": "return",
+        "links": [],
+        "x": 1455,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "d1ae3864f906a23d",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "ec95d786dfea7afd"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 1340,
+        "y": 40,
+        "wires": [
+            [
+                "0e6862c3b431f881"
+            ]
+        ]
+    },
+    {
+        "id": "21b2cda97feee8fa",
+        "type": "link in",
+        "z": "2ed932e01bfcb9f9",
+        "name": "devices/",
+        "links": [],
+        "x": 1005,
+        "y": 80,
+        "wires": [
+            [
+                "d00a1ff26f683760"
+            ]
+        ]
+    },
+    {
+        "id": "c268e4cd7482b245",
+        "type": "change",
+        "z": "2ed932e01bfcb9f9",
+        "name": "devices/",
+        "rules": [
+            {
+                "t": "set",
+                "p": "scope",
+                "pt": "msg",
+                "to": "devices",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1260,
+        "y": 80,
+        "wires": [
+            [
+                "5c716cc5c8294654"
+            ]
+        ]
+    },
+    {
+        "id": "3ac9eeac977faf01",
+        "type": "link out",
+        "z": "2ed932e01bfcb9f9",
+        "name": "link out 41",
+        "mode": "return",
+        "links": [],
+        "x": 1545,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "5c716cc5c8294654",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "66f76498483b8b70"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 1420,
+        "y": 80,
+        "wires": [
+            [
+                "3ac9eeac977faf01"
+            ]
+        ]
+    },
+    {
+        "id": "d00a1ff26f683760",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "0ab5cb955af5b676"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 1110,
+        "y": 80,
+        "wires": [
+            [
+                "c268e4cd7482b245"
+            ]
+        ]
+    },
+    {
+        "id": "2c0471bc0becd237",
+        "type": "ui-text-input",
+        "z": "2ed932e01bfcb9f9",
+        "group": "02821af719429a34",
+        "name": "",
+        "label": "Plug ID",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "topic": "payload",
+        "topicType": "msg",
+        "mode": "text",
+        "delay": 300,
+        "passthru": true,
+        "sendOnDelay": false,
+        "sendOnBlur": true,
+        "sendOnEnter": true,
+        "className": "",
+        "x": 760,
+        "y": 780,
+        "wires": [
+            [
+                "c6e7c21913196bd8"
+            ]
+        ]
+    },
+    {
+        "id": "c6e7c21913196bd8",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "21b2cda97feee8fa"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 920,
+        "y": 780,
+        "wires": [
+            [
+                "ba44f6cd876cdfc8"
+            ]
+        ]
+    },
+    {
+        "id": "ba44f6cd876cdfc8",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "08c19649961fc9bf"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 1090,
+        "y": 780,
+        "wires": [
+            [
+                "ced6ea39e35c0d48"
+            ]
+        ]
+    },
+    {
+        "id": "ced6ea39e35c0d48",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "1b5f9f98a6fb7e13"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 1230,
+        "y": 780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9635826422c73566",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "21b2cda97feee8fa"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 300,
+        "y": 780,
+        "wires": [
+            [
+                "77ffda5f8fead403"
+            ]
+        ]
+    },
+    {
+        "id": "77ffda5f8fead403",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "08c19649961fc9bf"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 470,
+        "y": 780,
+        "wires": [
+            [
+                "be94d638ac2ade8f"
+            ]
+        ]
+    },
+    {
+        "id": "be94d638ac2ade8f",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "877c14d358aecce9"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 610,
+        "y": 780,
+        "wires": [
+            [
+                "2c0471bc0becd237"
+            ]
+        ]
+    },
+    {
+        "id": "a4e613d6b73bac61",
+        "type": "link in",
+        "z": "2ed932e01bfcb9f9",
+        "name": "link in 10",
+        "links": [
+            "87f3573c9728fbc5"
+        ],
+        "x": 195,
+        "y": 780,
+        "wires": [
+            [
+                "9635826422c73566"
+            ]
+        ]
+    },
+    {
+        "id": "90bd5236ddb1b7fb",
+        "type": "link in",
+        "z": "2ed932e01bfcb9f9",
+        "name": "link in 11",
+        "links": [
+            "e96ef82f8d26a9a0"
+        ],
+        "x": 195,
+        "y": 940,
+        "wires": [
+            [
+                "8f963b9d09169005"
+            ]
+        ]
+    },
+    {
+        "id": "8f963b9d09169005",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "b4709e4b71317f83"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 300,
+        "y": 940,
+        "wires": [
+            [
+                "046cc05eb7d025be"
+            ]
+        ]
+    },
+    {
+        "id": "046cc05eb7d025be",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "c221be6679d7bc1e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 440,
+        "y": 940,
+        "wires": [
+            [
+                "298e2b4e2e433a3a"
+            ]
+        ]
+    },
+    {
+        "id": "298e2b4e2e433a3a",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "0e0c57bb7d2c2815"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 590,
+        "y": 940,
+        "wires": [
+            [
+                "9c30615b9f5318a0"
+            ]
+        ]
+    },
+    {
+        "id": "9c30615b9f5318a0",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "cfac2a9c1b2188a0"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 750,
+        "y": 940,
+        "wires": [
+            [
+                "17a9b868a18a9017"
+            ]
+        ]
+    },
+    {
+        "id": "442a9ab7e3e71afd",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "21b2cda97feee8fa"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 300,
+        "y": 1000,
+        "wires": [
+            [
+                "63551759fe843a1f"
+            ]
+        ]
+    },
+    {
+        "id": "17a9b868a18a9017",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "edc05f0545c5f75a"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 910,
+        "y": 940,
+        "wires": [
+            [
+                "442a9ab7e3e71afd"
+            ]
+        ]
+    },
+    {
+        "id": "63551759fe843a1f",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "9cf74795ca0b4ef4"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 430,
+        "y": 1000,
+        "wires": [
+            [
+                "f79172e6fa2ce74d"
+            ]
+        ]
+    },
+    {
+        "id": "f79172e6fa2ce74d",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "877c14d358aecce9"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 550,
+        "y": 1000,
+        "wires": [
+            [
+                "8139f137d0c7f2c5"
+            ]
+        ]
+    },
+    {
+        "id": "8139f137d0c7f2c5",
+        "type": "switch",
+        "z": "2ed932e01bfcb9f9",
+        "name": "defined",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 680,
+        "y": 1000,
+        "wires": [
+            [
+                "5eaeac0241269d3c"
+            ]
+        ]
+    },
+    {
+        "id": "5eaeac0241269d3c",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "10b5c6fb645992f8"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 820,
+        "y": 1000,
+        "wires": [
+            [
+                "dd14fb811ea13b8e"
+            ]
+        ]
+    },
+    {
+        "id": "dd14fb811ea13b8e",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "1cc83ea2d98b9d26"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 980,
+        "y": 1000,
+        "wires": [
+            [
+                "aa1632c95a2e8786"
+            ]
+        ]
+    },
+    {
+        "id": "aa1632c95a2e8786",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "cfac2a9c1b2188a0"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 1150,
+        "y": 1000,
+        "wires": [
+            [
+                "fb70335e12c9ecfe"
+            ]
+        ]
+    },
+    {
+        "id": "fb70335e12c9ecfe",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "4092bcd3313a2418"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 330,
+        "y": 1060,
+        "wires": [
+            [
+                "e5b0ecb3ac5a5a5d"
+            ]
+        ]
+    },
+    {
+        "id": "c132f67518cfd415",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "9cf74795ca0b4ef4"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 850,
+        "y": 1060,
+        "wires": [
+            [
+                "df427535f166738f"
+            ]
+        ]
+    },
+    {
+        "id": "df427535f166738f",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "877c14d358aecce9"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 990,
+        "y": 1060,
+        "wires": [
+            [
+                "61a54e036aebdb56"
+            ]
+        ]
+    },
+    {
+        "id": "e5b0ecb3ac5a5a5d",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "c221be6679d7bc1e"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 520,
+        "y": 1060,
+        "wires": [
+            [
+                "e3e6a96782296537"
+            ]
+        ]
+    },
+    {
+        "id": "e3e6a96782296537",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "edc05f0545c5f75a"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 690,
+        "y": 1060,
+        "wires": [
+            [
+                "c132f67518cfd415"
+            ]
+        ]
+    },
+    {
+        "id": "61a54e036aebdb56",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "10b5c6fb645992f8"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 300,
+        "y": 1120,
+        "wires": [
+            [
+                "cc52fd76488ea8ee"
+            ]
+        ]
+    },
+    {
+        "id": "cc52fd76488ea8ee",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "0e0c57bb7d2c2815"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 450,
+        "y": 1120,
+        "wires": [
+            [
+                "3217ea02a844cec2"
+            ]
+        ]
+    },
+    {
+        "id": "3217ea02a844cec2",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "9cf74795ca0b4ef4"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 590,
+        "y": 1120,
+        "wires": [
+            [
+                "76bfe499ecf57a91"
+            ]
+        ]
+    },
+    {
+        "id": "76bfe499ecf57a91",
+        "type": "link call",
+        "z": "2ed932e01bfcb9f9",
+        "name": "",
+        "links": [
+            "1c4de67d5fd894a8"
+        ],
+        "linkType": "static",
+        "timeout": "30",
+        "x": 720,
+        "y": 1120,
+        "wires": [
+            [
+                "6d0fd803a6b186c9"
+            ]
+        ]
+    },
+    {
+        "id": "6d0fd803a6b186c9",
+        "type": "debug",
+        "z": "2ed932e01bfcb9f9",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 920,
+        "y": 1120,
+        "wires": []
+    },
+    {
         "id": "1dd3f76faeaf930a",
         "type": "function",
         "z": "30bc1a5687a82b59",
@@ -8526,22 +9735,12 @@
         "type": "inject",
         "z": "30bc1a5687a82b59",
         "name": "Init",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
+        "props": [],
         "repeat": "",
         "crontab": "",
         "once": true,
-        "onceDelay": "0.5",
+        "onceDelay": "1",
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
         "x": 190,
         "y": 540,
         "wires": [
@@ -8572,7 +9771,9 @@
             "d3c2f7ba85e44a35",
             "88869dcccc632f9a",
             "89a11f26da08da10",
-            "0b154d2271bdaa5d"
+            "0b154d2271bdaa5d",
+            "a4e613d6b73bac61",
+            "37d81ff62874f1a2"
         ],
         "x": 295,
         "y": 540,
@@ -9265,5 +10466,57 @@
                 "f7f72f43935bd1ca"
             ]
         ]
+    },
+    {
+        "id": "f551d1ce560b366d",
+        "type": "link in",
+        "z": "30bc1a5687a82b59",
+        "name": "mem/s3",
+        "links": [],
+        "x": 135,
+        "y": 880,
+        "wires": [
+            [
+                "bac6e96713e793b7"
+            ]
+        ]
+    },
+    {
+        "id": "bac6e96713e793b7",
+        "type": "change",
+        "z": "30bc1a5687a82b59",
+        "name": "Slot 3",
+        "rules": [
+            {
+                "t": "set",
+                "p": "memorySlot",
+                "pt": "msg",
+                "to": "3",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 220,
+        "y": 880,
+        "wires": [
+            [
+                "9f8a535c20b459f3"
+            ]
+        ]
+    },
+    {
+        "id": "9f8a535c20b459f3",
+        "type": "link out",
+        "z": "30bc1a5687a82b59",
+        "name": "link out 42",
+        "mode": "return",
+        "links": [],
+        "x": 305,
+        "y": 880,
+        "wires": []
     }
 ]
